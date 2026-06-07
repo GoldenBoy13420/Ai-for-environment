@@ -1,9 +1,44 @@
-# Ignore data
-Data/
+# =========================
+# 1. Data Files & Databases (CRITICAL)
+# =========================
+# تجاهل مجلد البيانات بالكامل لمنع رفع جيجابايتات من البيانات
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+*.parquet
+*.txt
 
-# Ignore notebooks checkpoints
+# =========================
+# 2. Jupyter Notebooks
+# =========================
+# تجاهل الملفات المؤقتة التي تنشئها مساحات العمل
 .ipynb_checkpoints/
 
-# Python
+# =========================
+# 3. Python & Virtual Environments
+# =========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# تجاهل مجلدات البيئات الوهمية
+venv/
+env/
+.env
+.venv/
+
+# =========================
+# 4. OS & IDE Specific
+# =========================
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store
+
+# VS Code / PyCharm
+.vscode/
+.idea/
