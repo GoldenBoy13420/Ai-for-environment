@@ -3,15 +3,14 @@ import sqlite3
 import joblib
 import os
 import xgboost as xgb
-import lightgbm as lgb
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+# تم إزالة LightGBM و RandomForest لأننا مش هنحتاجهم في الـ Production
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 from sklearn.utils import resample, shuffle
 from src.config import DB_PATH, MATRIX_B, MODEL_DIR
 
 def train_adverse_event_model():
-    print("🚀 Loading Matrix B for Final Tuned Training...")
+    print("🚀 Loading Matrix B for Lightweight Production Training...")
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query(f"SELECT * FROM {MATRIX_B}", conn)
     conn.close()
@@ -56,26 +55,18 @@ def train_adverse_event_model():
     X_train[cat_cols] = oe.fit_transform(X_train[cat_cols])
     X_test[cat_cols] = oe.transform(X_test[cat_cols])
 
-    print("🚀 Training Final Tuned Ensemble Model...")
-    best_xgb = xgb.XGBClassifier(
+    print("🚀 Training Final Lightweight XGBoost Model for Deployment...")
+    # تم الإبقاء على XGBoost فقط عشان يكون سريع ومساحته صغيرة جداً
+    production_xgb = xgb.XGBClassifier(
         objective='multi:softprob', num_class=num_classes, tree_method='hist',
         max_depth=10, learning_rate=0.137, n_estimators=400, random_state=42, n_jobs=-1
     )
-    best_lgb = lgb.LGBMClassifier(
-        objective='multiclass', num_class=num_classes, verbose=-1,
-        max_depth=8, learning_rate=0.117, n_estimators=300, random_state=42, n_jobs=-1
-    )
-    best_rf = RandomForestClassifier(n_estimators=150, max_depth=10, random_state=42, n_jobs=-1)
 
-    final_ensemble = VotingClassifier(
-        estimators=[('XGB', best_xgb), ('LGBM', best_lgb), ('RF', best_rf)],
-        voting='soft', n_jobs=1
-    )
-
-    final_ensemble.fit(X_train, y_train)
+    production_xgb.fit(X_train, y_train)
     
     print("💾 Saving Models...")
-    joblib.dump(final_ensemble, os.path.join(MODEL_DIR, 'matrix_b_ensemble_TUNED.pkl'))
+    # تم تغيير اسم الموديل عشان يعكس إنه XGBoost خفيف
+    joblib.dump(production_xgb, os.path.join(MODEL_DIR, 'xgb_matrix_b_model.pkl'))
     joblib.dump(le_target, os.path.join(MODEL_DIR, 'le_matrix_b.pkl'))
     joblib.dump(oe, os.path.join(MODEL_DIR, 'oe_matrix_b.pkl'))
     print("✅ Training Pipeline Completed!")

@@ -57,7 +57,10 @@ def load_artifacts():
     try:
         sev_model = joblib.load(os.path.join(MODEL_DIR, 'xgb_severity_model.pkl'))
         sev_encoders = joblib.load(os.path.join(MODEL_DIR, 'severity_encoders.pkl'))
-        reac_model = joblib.load(os.path.join(MODEL_DIR, 'matrix_b_ensemble_TUNED.pkl'))
+        
+        # 🛠️ التعديل هنا: غيرنا اسم الموديل للنسخة الخفيفة بتاعة XGBoost
+        reac_model = joblib.load(os.path.join(MODEL_DIR, 'xgb_matrix_b_model.pkl')) 
+        
         reac_le = joblib.load(os.path.join(MODEL_DIR, 'le_matrix_b.pkl'))
         reac_oe = joblib.load(os.path.join(MODEL_DIR, 'oe_matrix_b.pkl'))
         return sev_model, sev_encoders, reac_model, reac_le, reac_oe
