@@ -313,11 +313,11 @@ DRUG-SAFETY-INTELLIGENCE-SYSTEM/
 </td>
 
 <td align="center">
-<img src="https://github.com/AbdelrhmanBatran.png" width="80" style="border-radius: 50%"/>
+<img src="https://github.com/Batran7.png" width="80" style="border-radius: 50%"/>
 <br/><strong>Abdelrhman Batran</strong>
 <br/><sub>💻 Data Scientist</sub>
 <br/>
-<a href="https://github.com/AbdelrhmanBatran">
+<a href="https://github.com/Batran7">
 <img src="https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white"/>
 </a>
 </td>
